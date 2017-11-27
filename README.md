@@ -1,19 +1,8 @@
-# Angular 1.4.x styleguide (ES5/old version)
+# Angular1 component based project styleguide (ES5 version)
 
-For the new ES2015, component architecture guide please see 
 
-*Opinionated Angular styleguide for teams by [@toddmotto](//twitter.com/toddmotto)*
+A standardised approach for developing Angular1 based applications in teams.
 
-A standardised approach for developing Angular applications in teams. This styleguide touches on concepts, syntax, conventions and is based on my experience [writing](http:////toddmotto.com), [talking](https://speakerdeck.com/toddmotto), and building Angular applications.
-
-> Join the Ultimate AngularJS experience and fully master basic and advanced Angular features
-
-<a href="http://courses.toddmotto.com" target="_blank"><img src="https://toddmotto.com/img/ua.png?1"></a>
-
-#### Community
-[John Papa](//twitter.com/John_Papa) and I have discussed in-depth styling patterns for Angular and as such have both released separate styleguides. Thanks to those discussions, I've learned some great tips from John that have helped shape this guide. We've both created our own take on a styleguide. I urge you to [check his out](//github.com/johnpapa/angularjs-styleguide) to compare thoughts.
-
-> See the [original article](http://toddmotto.com/opinionated-angular-js-styleguide-for-teams) that sparked this off
 
 ## Table of Contents
 
@@ -75,37 +64,37 @@ A standardised approach for developing Angular applications in teams. This style
     ```
 
   - ES6 Classes are not hoisted, which will break your code if you rely on hoisting
-  
+
   - This aids with readability and reduces the volume of code "wrapped" inside the Angular framework
-  
+
   - **IIFE scoping**: To avoid polluting the global scope with our function declarations that get passed into Angular, ensure build tasks wrap the concatenated files inside an IIFE
-  
+
     ```javascript
     (function () {
 
       angular
         .module('app', []);
-      
+
       // MainCtrl.js
       function MainCtrl () {
 
       }
-      
+
       angular
         .module('app')
         .controller('MainCtrl', MainCtrl);
-      
+
       // SomeService.js
       function SomeService () {
 
       }
-      
+
       angular
         .module('app')
         .service('SomeService', SomeService);
-        
+
       // ...
-        
+
     })();
     ```
 
@@ -191,14 +180,14 @@ A standardised approach for developing Angular applications in teams. This style
     function MainCtrl () {
       var vm = this;
       var doSomething = function () {
-        
+
       };
       vm.doSomething = doSomething;
     }
     ```
 
     *Why?* : Function context changes the `this` value, use it to avoid `.bind()` calls and scoping issues
-    
+
   - **ES6**: Avoid `var vm = this;` when using ES6
 
     ```javascript
@@ -208,21 +197,21 @@ A standardised approach for developing Angular applications in teams. This style
       let doSomething = arg => {
         console.log(vm);
       };
-      
+
       // exports
       vm.doSomething = doSomething;
     }
 
     // recommended
     function MainCtrl () {
-      
+
       let doSomething = arg => {
         console.log(this);
       };
-      
+
       // exports
       this.doSomething = doSomething;
-      
+
     }
     ```
 
@@ -233,7 +222,7 @@ A standardised approach for developing Angular applications in teams. This style
     ```javascript
     // avoid
     function MainCtrl () {
-      
+
       var vm = this;
 
       $http
@@ -616,15 +605,15 @@ A standardised approach for developing Angular applications in teams. This style
     // recommended
     <h1>{{ ::vm.title }}</h1>
     ```
-    
+
     *Why?* : Binding once removes the watcher from the scope's `$$watchers` array after the `undefined` variable becomes resolved, thus improving performance in each dirty-check
-    
+
   - **Consider $scope.$digest**: Use `$scope.$digest` over `$scope.$apply` where it makes sense. Only child scopes will update
 
     ```javascript
     $scope.$digest();
     ```
-    
+
     *Why?* : `$scope.$apply` will call `$rootScope.$digest`, which causes the entire application `$$watchers` to dirty-check again. Using `$scope.$digest` will dirty check current and child scopes from the initiated `$scope`
 
 **[Back to top](#table-of-contents)**
@@ -750,32 +739,3 @@ A standardised approach for developing Angular applications in teams. This style
 
 ## Angular docs
 For anything else, including API reference, check the [Angular documentation](//docs.angularjs.org/api).
-
-## Contributing
-
-Open an issue first to discuss potential changes/additions.
-
-## License
-
-#### (The MIT License)
-
-Copyright (c) 2015-2016 Todd Motto
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
